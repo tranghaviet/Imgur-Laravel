@@ -1,17 +1,19 @@
-<?php namespace Redeman\Imgur\TokenStorage;
+<?php
+
+namespace Redeman\Imgur\TokenStorage;
 
 use Illuminate\Session\Store;
 
 /**
  * Stores the user's token in a session
  */
-class SessionStorage implements Storage {
-
+class SessionStorage implements Storage
+{
     /**
-     * Sesison storage
+     * Session storage
      * @var Store
      */
-    private $session;
+    public $session;
 
     /**
      * Use a session storage to store our tokens
@@ -43,6 +45,6 @@ class SessionStorage implements Storage {
      */
     public function set($name, $value)
     {
-        $this->session->set($name, $value);
+        $this->session->put($name, $value);
     }
 }
