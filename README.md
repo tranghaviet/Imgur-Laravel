@@ -1,5 +1,5 @@
 ## Description
-A Laravel (>= 5) Package for using the Imgur api. Internally we use [j0k3r/php-imgur-api-client](https://github.com/j0k3r/php-imgur-api-client).
+A Laravel (>= 5.8) Package for using the Imgur api. Internally we use [j0k3r/php-imgur-api-client](https://github.com/j0k3r/php-imgur-api-client).
 The package provides a service provider, some configuration and a facade, such that you should be able to get started with writing your app immediately.
 
 For more detailed documentation on how to use `j0k3r/php-imgur-api-client` you should look at their [documentation](https://github.com/j0k3r/php-imgur-api-client).
@@ -17,15 +17,10 @@ foreach ($images as $image)
 ```
 
 ## Getting started
-First you will have to install the package using composer, this can be done by adding the following to your `require` block,
+First you will have to install the package using composer
 ```
-"redeman/imgur-laravel": "~1.0",
+composer require tranghaviet/imgur-laravel
 ```
-Next you can register the service provider by adding,
-```php
-'Redeman\Imgur\ImgurServiceProvider',
-```
-to your providers array (in `config/app.php`).
 Imgur uses Oauth 2.0 to authenticate users. Therefore you have get a authentication token from your users if you want them to be able to view and upload images.
 In Laravel you can do this by first add a route middleware to the `Redeman\Imgur\Middleware\AuthenticateImgur` middleware in your `App\Http\Kernel`.
 ```php
@@ -85,12 +80,11 @@ Now you're all set! The next section describes how you can configure the package
 
 You can publish the configuration file:
 
-### Laravel >= 5:
 ```
 php artisan vendor:publish --provider="Redeman\Imgur\ImgurServiceProvider"
 ```
 
-Now you can fill in the appropriate values for `client_id` and `client_secret`. It is encouraged to use a `.env` which contains your client id and secret. Here is how you can do this in laravel 5:
+Now you can fill in the appropriate values for `client_id` and `client_secret`. It is encouraged to use a `.env` which contains your client id and secret.
 ```php
 /*
  * Public client id
