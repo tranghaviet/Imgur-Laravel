@@ -4,12 +4,12 @@ return [
     /*
      * Public client id provided by Imgur
      */
-    'client_id' => '',
+    'client_id' => env('IMGUR_CLIENT_ID'),
 
     /**
      * Client secret provided by Imgur
      */
-    'client_secret' => '',
+    'client_secret' => env('IMGUR_CLIENT_SECRET'),
 
     /**
      * The storage facility to be used to store a user's token.
@@ -17,5 +17,5 @@ return [
      *   Redeman\Imgur\TokenStorage\Storage
      * interface.
      */
-    'token_storage' => 'Redeman\Imgur\TokenStorage\SessionStorage',
+    'token_storage' => \Redeman\Imgur\TokenStorage\SessionStorage::class,
 ];

@@ -24,9 +24,11 @@ class AuthenticateImgur {
      * @var Redirector
      */
     private $redirector;
-
+    
     /**
      * @param Client $imgur
+     * @param Storage $store
+     * @param Redirector $redirector
      */
     public function __construct(Client $imgur, Storage $store, Redirector $redirector)
     {
@@ -47,16 +49,11 @@ class AuthenticateImgur {
         // Either authenticate the user if it's token is known,
         // request access to its token, or redirect the user
         // such that we can ask him to authorize our application
-        if ($token = $this->store->get('imgur-token'))
-        {
+        if ($token = $this->store->get('imgur-token')) {
             $this->authenticateUser($token);
-        }
-        elseif ($code = $request->get('code'))
-        {
+        } elseif ($code = $request->get('code')) {
             $this->requestAccess($code);
-        }
-        else
-        {
+        } else {
             return $this->redirector->route('imgur.authenticate');
         }
 
@@ -71,7 +68,7 @@ class AuthenticateImgur {
     private function authenticateUser($token)
     {
         $this->imgur->setAccessToken($token);
-        // Refresh the token if neccessary
+        // Refresh the token if necessary
         if($this->imgur->checkAccessTokenExpired())
         {
             $this->imgur->refreshToken();

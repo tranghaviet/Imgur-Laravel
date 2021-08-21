@@ -1,13 +1,10 @@
 <?php namespace Redeman\Imgur;
 
 use Illuminate\Support\ServiceProvider;
-use Redeman\Imgur\ImgurServiceProviderLaravel4;
-use Redeman\Imgur\ImgurServiceProviderLaravel5;
 use Imgur\Client;
 
 class ImgurServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -16,35 +13,15 @@ class ImgurServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
-     * Actual provider
-     *
-     * @var \Illuminate\Support\ServiceProvider
-     */
-    protected $provider;
-
-    /**
-     * Construct the Imgur service provider
-     */
-    public function __construct()
-    {
-        // Call the parent constructor with all provided arguments
-        $arguments = func_get_args();
-        call_user_func_array(
-            [$this, 'parent::' . __FUNCTION__],
-            $arguments
-        );
-
-        $this->registerProvider();
-    }
-
-    /**
      * Bootstrap the application events.
      *
      * @return void
      */
     public function boot()
     {
-        return $this->provider->boot();
+        $this->publishes([
+            $this->defaultConfig() => config_path('imgur.php'),
+        ]);
     }
 
     /**
@@ -54,11 +31,10 @@ class ImgurServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        // Configure any bindings that are version dependent
-        $this->provider->register();
+        $this->mergeConfigFrom($this->defaultConfig(), 'imgur');
 
         $this->app->singleton('Imgur\Client', function() {
-            $config = $this->provider->config();
+            $config = $this->config();
             // Setup the client
             $client = new Client;
             $client->setOption('client_id', $config['client_id']);
@@ -68,26 +44,7 @@ class ImgurServiceProvider extends ServiceProvider
         });
 
         // Make the token storage configurable
-        $this->app->bind('Redeman\Imgur\TokenStorage\Storage', function($app) {
-            $config = $this->provider->config();
-            return $app->make($config['token_storage']);
-        });
-    }
-
-
-    /**
-     * Register the ServiceProvider according to Laravel version
-     *
-     * @return \Redeman\Imgur\Provider\ProviderInterface
-     */
-    private function registerProvider()
-    {
-        $app = $this->app;
-
-        // Pick the correct service provider for the current verison of Laravel
-        $this->provider = (version_compare($app::VERSION, '5.0', '<'))
-            ? new ImgurServiceProviderLaravel4($app)
-            : new ImgurServiceProviderLaravel5($app);
+        $this->app->bind(\Redeman\Imgur\TokenStorage\Storage::class, $this->config()['token_storage']);
     }
 
     /**
@@ -97,6 +54,26 @@ class ImgurServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('imgur');
+        return ['imgur'];
+    }
+
+    /**
+     * Get the Imgur configuration from the config repository
+     *
+     * @return array
+     */
+    public function config()
+    {
+        return $this->app['config']->get('imgur');
+    }
+
+    /**
+     * Returns the default configuration path
+     *
+     * @return string
+     */
+    public function defaultConfig()
+    {
+        return __DIR__ . '/config/imgur.php';
     }
 }

@@ -39,7 +39,7 @@ class SessionStorageTest extends PHPUnit_Framework_TestCase
      */
     public function it_sets_values_from_storage()
     {
-        $this->storage->shouldReceive('set')->with('key', 'value');
+        $this->storage->shouldReceive('put')->with('key', 'value');
         $this->session->set('key', 'value');
     }
 }
