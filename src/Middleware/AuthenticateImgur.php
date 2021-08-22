@@ -11,19 +11,19 @@ class AuthenticateImgur {
      * The Imgur client
      * @var Client
      */
-    private $imgur;
+    protected $imgur;
 
     /**
      * Token storage
      * @var Storage
      */
-    private $store;
+    protected $store;
 
 
     /**
      * @var Redirector
      */
-    private $redirector;
+    protected $redirector;
     
     /**
      * @param Client $imgur
@@ -65,7 +65,7 @@ class AuthenticateImgur {
      * @param  array $token
      * @return void
      */
-    private function authenticateUser($token)
+    protected function authenticateUser($token)
     {
         $this->imgur->setAccessToken($token);
         // Refresh the token if necessary
@@ -80,7 +80,7 @@ class AuthenticateImgur {
      * @param  string $code the code returned by imgur
      * @return void
      */
-    private function requestAccess($code)
+    protected function requestAccess($code)
     {
         $this->imgur->requestAccessToken($code);
 
