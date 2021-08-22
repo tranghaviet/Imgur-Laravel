@@ -49,7 +49,7 @@ class AuthenticateImgur {
         // Either authenticate the user if it's token is known,
         // request access to its token, or redirect the user
         // such that we can ask him to authorize our application
-        if ($token = $this->store->get('imgur-token')) {
+        if ($token = $this->store->get(config('imgur.storage_key'))) {
             $this->authenticateUser($token);
         } elseif ($code = $request->get('code')) {
             $this->requestAccess($code);
@@ -86,7 +86,7 @@ class AuthenticateImgur {
 
         // save the new token
         $token = $this->imgur->getAccessToken();
-        $this->store->set('imgur-token', $token);
+        $this->store->set(config('imgur.storage_key'), $token);
 
         // authenticate the user with the new token
         $this->authenticateUser($token);

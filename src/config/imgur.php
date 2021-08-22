@@ -12,6 +12,11 @@ return [
     'client_secret' => env('IMGUR_CLIENT_SECRET'),
 
     /**
+     * Storage key to save imgur token
+     */
+    'storage_key' => 'imgur-token',
+
+    /**
      * The storage facility to be used to store a user's token.
      * Should be a name of a class implementing the
      *   Redeman\Imgur\TokenStorage\Storage
