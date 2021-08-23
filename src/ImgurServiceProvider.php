@@ -1,10 +1,9 @@
 <?php namespace Redeman\Imgur;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Imgur\Client;
 
-class ImgurServiceProvider extends ServiceProvider implements DeferrableProvider
+class ImgurServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application events.
